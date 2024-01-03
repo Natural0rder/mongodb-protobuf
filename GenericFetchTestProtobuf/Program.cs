@@ -7,6 +7,7 @@ const string DB_NAME = "protobuf";
 const string COLL_NAME = "dummy-bson";
 const string COLL_NAME_PB = "dummy-protobuf";
 const string COLL_NAME_ZIP_PB = "dummy-protobuf-zipped";
+const int DOC_COUNT = 10000;
 var builder = new ConfigurationBuilder().AddJsonFile($"appsettings.json", true, true);
 var config = builder.Build();
 var connectionString = config["ConnectionStrings:DefaultConnection"];
@@ -24,7 +25,7 @@ if (fetchCountPerRun < 1)
     fetchCountPerRun = 1;
 
 if (prepareDataset)
-    PrepareDataset(connectionString);
+    PrepareDataset(connectionString, DOC_COUNT);
 
 Run(connectionString, fetchCountPerRun, NetworkCompression.Snappy);
 Run(connectionString, fetchCountPerRun, NetworkCompression.Zlib);
@@ -33,19 +34,21 @@ Run(connectionString, fetchCountPerRun);
 
 Console.ReadLine();
 
-void RunFetch<T>(IMongoCollection<T> coll, bool unzip = false)
+void RunFetch<T>(IMongoCollection<T> coll, int iteration, bool unzip = false)
 {
     var sw = new Stopwatch();
     sw.Start();
 
-    // Build your query here
+    // Build your MongoDB query here
     var docs = coll.Find(Builders<T>.Filter.Empty).ToList();
 
     var elapsedFetch = sw.ElapsedMilliseconds;
-    Console.WriteLine($"{elapsedFetch} ms to fetch {docs.Count()} documents.");
+    Console.WriteLine($"Fetch #{iteration + 1}: {elapsedFetch} ms to [fetch] {docs.Count} documents.");
 
     if (typeof(T) == typeof(DummyForProtobuf))
     {
+        var task = unzip ? "[deserialize and unzip]" : "[deserialize]";
+
         sw.Reset();
         sw.Start();
 
@@ -62,7 +65,7 @@ void RunFetch<T>(IMongoCollection<T> coll, bool unzip = false)
         });
 
         var elapsedDeserialize = sw.ElapsedMilliseconds;
-        Console.WriteLine($"{elapsedDeserialize} ms to deserialize (unzip = {unzip}) {docs.Count()} documents.");
+        Console.WriteLine($"Post-processing #{iteration + 1}: {elapsedDeserialize} ms to {task} {docs.Count} documents.");
     }
 }
 
@@ -72,74 +75,72 @@ void Run(string cs, int fetchCount, NetworkCompression? networkCompression = nul
     {
         case NetworkCompression.Zlib:
             cs = cs + "/?compressors=zlib";
-            Console.WriteLine("Run with -Zlib- network compression...");
+            Console.WriteLine("Run with [Zlib] network compression.");
             break;
         case NetworkCompression.Zstd:
             cs = cs + "/?compressors=zstd";
-            Console.WriteLine("Run with -Zstd- network compression...");
+            Console.WriteLine("Run with [Zstd] network compression.");
             break;
         case NetworkCompression.Snappy:
             cs = cs + "/?compressors=snappy";
-            Console.WriteLine("Run with -Snappy- network compression...");
+            Console.WriteLine("Run with [Snappy] network compression.");
             break;
         default:
-            Console.WriteLine("Run with -No- network compression...");
+            Console.WriteLine("Run with [No] network compression.");
             break;
     }
 
     var client = new MongoClient(cs);
     var database = client.GetDatabase(DB_NAME);
-    Console.WriteLine($"Start {fetchCount} run(s) for BSON...");
+
+    // You can add a warm up process here (eg. to avoid first "slow" query for instance)
+    // RunWarmUp();
+
+    Console.WriteLine($"Start {fetchCount} run(s) with [BSON].");
     for (int i = 0; i < fetchCount; i++)
-        RunFetch(database.GetCollection<DummyForBson>(COLL_NAME));
-    Console.WriteLine($"Start {fetchCount} run(s) for Protobuf...");
+        RunFetch(database.GetCollection<DummyForBson>(COLL_NAME), i);
+    Console.WriteLine($"Start {fetchCount} run(s) with [Protobuf].");
     for (int i = 0; i < fetchCount; i++)
-        RunFetch(database.GetCollection<DummyForProtobuf>(COLL_NAME_PB));
-    Console.WriteLine($"Start {fetchCount} run(s) for GZipped Protobuf...");
+        RunFetch(database.GetCollection<DummyForProtobuf>(COLL_NAME_PB), i);
+    Console.WriteLine($"Start {fetchCount} run(s) with [GZipped Protobuf].");
     for (int i = 0; i < fetchCount; i++)
-        RunFetch(database.GetCollection<DummyForProtobuf>(COLL_NAME_ZIP_PB), true);
+        RunFetch(database.GetCollection<DummyForProtobuf>(COLL_NAME_ZIP_PB), i, true);
     Console.WriteLine("Done.");
 }
 
-void PrepareDataset(string cs)
+void PrepareDataset(string cs, int docCount)
 {
     var client = new MongoClient(cs);
     var database = client.GetDatabase(DB_NAME);
     var collectionBson = database.GetCollection<DummyForBson>(COLL_NAME);
     var collectionProtobuf = database.GetCollection<DummyForProtobuf>(COLL_NAME_PB);
     var collectionProtobufZipped = database.GetCollection<DummyForProtobuf>(COLL_NAME_ZIP_PB);
-    Console.WriteLine("Preparing data set...");
+    Console.WriteLine("Preparing test data set.");
 
     var dummyBson = new List<DummyForBson>();
 
-    for (int i = 0; i < 10000; i++)
-    {
+    for (int i = 0; i < docCount; i++)
         dummyBson.Add(new DummyForBson());
-    }
 
     var dummyProtobuf = new List<DummyForProtobuf>();
 
-    for (int i = 0; i < 10000; i++)
-    {
+    for (int i = 0; i < docCount; i++)
         dummyProtobuf.Add(new DummyForProtobuf());
-    }
 
     var dummyProtobufZipped = new List<DummyForProtobuf>();
 
-    for (int i = 0; i < 10000; i++)
-    {
+    for (int i = 0; i < docCount; i++)
         dummyProtobufZipped.Add(new DummyForProtobuf(true));
-    }
 
-    Console.WriteLine("Pushing Bson...");
+    Console.WriteLine($"Persisting {docCount} documents with [BSON].");
     database.DropCollection(COLL_NAME);
     collectionBson.InsertMany(dummyBson);
 
-    Console.WriteLine("Pushing Protobuf...");
+    Console.WriteLine($"Persisting {docCount} documents with [Protobuf].");
     database.DropCollection(COLL_NAME_PB);
     collectionProtobuf.InsertMany(dummyProtobuf);
 
-    Console.WriteLine("Pushing Gzipped Protobuf...");
+    Console.WriteLine($"Persisting {docCount} documents with [GZipped Protobuf].");
     database.DropCollection(COLL_NAME_ZIP_PB);
     collectionProtobufZipped.InsertMany(dummyProtobufZipped);
 
