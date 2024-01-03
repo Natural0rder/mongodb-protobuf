@@ -27,3 +27,68 @@ Optimize your application with appsettings.json for streamlined configuration:
 2. **Fetch Count per Run (FetchCountPerRun):** Dynamically set the number of fetch operations through appsettings.json, providing flexibility for varied performance testing scenarios.
 
 3. **Custom Test Classes (Adapt POCO.cs):** Modify POCO.cs to construct personalized test classes, aligning your application precisely with unique testing requirements.
+
+Here is an ouput sample:
+
+```
+Run with [Snappy] network compression.
+Start 2 run(s) with [BSON].
+Fetch #1: 251 ms to [fetch] 100 documents.
+Fetch #2: 68 ms to [fetch] 100 documents.
+Start 2 run(s) with [Protobuf].
+Fetch #1: 119 ms to [fetch] 100 documents.
+Post-processing #1: 47 ms to [deserialize] 100 documents.
+Fetch #2: 73 ms to [fetch] 100 documents.
+Post-processing #2: 0 ms to [deserialize] 100 documents.
+Start 2 run(s) with [GZipped Protobuf].
+Fetch #1: 126 ms to [fetch] 100 documents.
+Post-processing #1: 3 ms to [deserialize and unzip] 100 documents.
+Fetch #2: 85 ms to [fetch] 100 documents.
+Post-processing #2: 1 ms to [deserialize and unzip] 100 documents.
+Done.
+Run with [Zlib] network compression.
+Start 2 run(s) with [BSON].
+Fetch #1: 159 ms to [fetch] 100 documents.
+Fetch #2: 104 ms to [fetch] 100 documents.
+Start 2 run(s) with [Protobuf].
+Fetch #1: 86 ms to [fetch] 100 documents.
+Post-processing #1: 0 ms to [deserialize] 100 documents.
+Fetch #2: 115 ms to [fetch] 100 documents.
+Post-processing #2: 0 ms to [deserialize] 100 documents.
+Start 2 run(s) with [GZipped Protobuf].
+Fetch #1: 110 ms to [fetch] 100 documents.
+Post-processing #1: 0 ms to [deserialize and unzip] 100 documents.
+Fetch #2: 117 ms to [fetch] 100 documents.
+Post-processing #2: 0 ms to [deserialize and unzip] 100 documents.
+Done.
+Run with [Zstd] network compression.
+Start 2 run(s) with [BSON].
+Fetch #1: 170 ms to [fetch] 100 documents.
+Fetch #2: 109 ms to [fetch] 100 documents.
+Start 2 run(s) with [Protobuf].
+Fetch #1: 74 ms to [fetch] 100 documents.
+Post-processing #1: 0 ms to [deserialize] 100 documents.
+Fetch #2: 114 ms to [fetch] 100 documents.
+Post-processing #2: 2 ms to [deserialize] 100 documents.
+Start 2 run(s) with [GZipped Protobuf].
+Fetch #1: 100 ms to [fetch] 100 documents.
+Post-processing #1: 2 ms to [deserialize and unzip] 100 documents.
+Fetch #2: 78 ms to [fetch] 100 documents.
+Post-processing #2: 2 ms to [deserialize and unzip] 100 documents.
+Done.
+Run with [No] network compression.
+Start 2 run(s) with [BSON].
+Fetch #1: 176 ms to [fetch] 100 documents.
+Fetch #2: 157 ms to [fetch] 100 documents.
+Start 2 run(s) with [Protobuf].
+Fetch #1: 152 ms to [fetch] 100 documents.
+Post-processing #1: 4 ms to [deserialize] 100 documents.
+Fetch #2: 131 ms to [fetch] 100 documents.
+Post-processing #2: 3 ms to [deserialize] 100 documents.
+Start 2 run(s) with [GZipped Protobuf].
+Fetch #1: 80 ms to [fetch] 100 documents.
+Post-processing #1: 0 ms to [deserialize and unzip] 100 documents.
+Fetch #2: 87 ms to [fetch] 100 documents.
+Post-processing #2: 0 ms to [deserialize and unzip] 100 documents.
+Done.
+```
