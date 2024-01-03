@@ -20,9 +20,10 @@ This comprehensive evaluation provides insights into the comparative performance
 
 <img width="1179" alt="image" src="https://github.com/Natural0rder/mongodb-protobuf/assets/102281652/c823f859-7ae8-4f52-a91b-a20f0ac4a6c8">
 
-Use appsettings.json to configure:
+Optimize your application with appsettings.json for streamlined configuration:
 
-- The preparation of the data set (PrepareDataset)
-- The fetch count per run (FetchCountPerRun)
+1. **Data Set Preparation (PrepareDataset):** Tailor the data set preparation effortlessly by adjusting parameters in appsettings.json, ensuring adaptability to specific testing needs.
 
-Adapt POCO.cs to build your own test classes.
+2. **Fetch Count per Run (FetchCountPerRun):** Dynamically set the number of fetch operations through appsettings.json, providing flexibility for varied performance testing scenarios.
+
+3. **Custom Test Classes (Adapt POCO.cs):** Modify POCO.cs to construct personalized test classes, aligning your application precisely with unique testing requirements.
