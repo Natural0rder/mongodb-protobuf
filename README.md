@@ -28,7 +28,7 @@ Optimize your application with appsettings.json for streamlined configuration:
 
 3. **Custom Test Classes (Adapt POCO.cs):** Modify POCO.cs to construct personalized test classes, aligning your application precisely with unique testing requirements.
 
-Here is an ouput sample:
+Here is an output sample with 2 runs per configuration (performing a warm up is relevant to avoid "first slow query" behavior):
 
 ```
 Run with [Snappy] network compression.
