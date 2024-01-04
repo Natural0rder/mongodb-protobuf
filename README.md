@@ -18,7 +18,7 @@ The tests encompass a spectrum of network compression methodologies, including:
 
 This comprehensive evaluation provides insights into the comparative performance of MongoDB fetch operations under different serialization formats and compression strategies, aiding in the optimization of data retrieval processes based on specific use cases and requirements.
 
-<img width="1179" alt="image" src="https://github.com/Natural0rder/mongodb-protobuf/assets/102281652/c823f859-7ae8-4f52-a91b-a20f0ac4a6c8">
+<img width="1178" alt="image" src="https://github.com/Natural0rder/mongodb-protobuf/assets/102281652/49e4ef45-bd6c-44f3-bff2-6022767f5b89">
 
 Optimize your application with appsettings.json for streamlined configuration:
 
