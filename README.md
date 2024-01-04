@@ -38,8 +38,8 @@ Avoid depending solely on tests conducted on your local machine. Instead, priori
 
 To install dotnet on AWS EC2 (Amazon Linux):
 
-**https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#scripted-install
-**https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#set-environment-variables-system-wide
+1. https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#scripted-install
+2. https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#set-environment-variables-system-wide
 
 In case of globalization concern:
 
