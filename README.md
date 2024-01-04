@@ -1,3 +1,5 @@
+# Summary
+
 An uncomplicated .NET 7 console application designed to evaluate MongoDB retrieval performance across diverse scenarios:
 
 1. **Classic BSON:** Examining fetch performance using the traditional BSON format.
@@ -20,6 +22,8 @@ This comprehensive evaluation provides insights into the comparative performance
 
 <img width="1178" alt="image" src="https://github.com/Natural0rder/mongodb-protobuf/assets/102281652/49e4ef45-bd6c-44f3-bff2-6022767f5b89">
 
+# Configuration
+
 Optimize your application with appsettings.json for streamlined configuration:
 
 1. **Data Set Preparation (PrepareDataset):** Tailor the data set preparation effortlessly by adjusting parameters in appsettings.json, ensuring adaptability to specific testing needs.
@@ -27,6 +31,30 @@ Optimize your application with appsettings.json for streamlined configuration:
 2. **Fetch Count per Run (FetchCountPerRun):** Dynamically set the number of fetch operations through appsettings.json, providing flexibility for varied performance testing scenarios.
 
 3. **Custom Test Classes (Adapt POCO.cs):** Modify POCO.cs to construct personalized test classes, aligning your application precisely with unique testing requirements.
+
+# Test conditions
+
+Avoid depending solely on tests conducted on your local machine. Instead, prioritize running the application in a virtual machine (VM) or a container with a network configuration that closely mirrors real-world conditions and is in proximity to your MongoDB cluster.
+
+To install dotnet on AWS EC2 (Amazon Linux):
+
+**https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#scripted-install
+**https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#set-environment-variables-system-wide
+
+In case of globalization concern:
+
+```
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+```
+
+Then, once in the .csproj folder:
+
+```
+dotnet build ./
+dotnet run ./
+```
+
+# Console output
 
 Here is an output sample with 2 runs per configuration (performing a warm up is relevant to avoid "first slow query" behavior):
 
