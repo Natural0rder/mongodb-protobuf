@@ -58,7 +58,9 @@ dotnet run ./
 
 # Console output
 
-Here is an output sample with 2 runs per configuration (performing a warm up is relevant to avoid "first slow query" behavior):
+Optimize your system's performance by incorporating a warm-up phase through the implementation of the commented RunWarmUp() method. This practice proves invaluable, notably in preventing potential 'first slow query' issues. 
+
+Below, you'll find the console output detailing two runs per configuration:
 
 ```
 Run with [Snappy] network compression.
