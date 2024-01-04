@@ -35,7 +35,8 @@ Optimize your application with appsettings.json for streamlined configuration:
 # Test conditions
 
 Avoid depending solely on tests conducted on your local machine. Instead, prioritize running the application in a virtual machine (VM) or a container with a network configuration that closely mirrors real-world conditions and is in proximity to your MongoDB cluster.
-If you use MongoDB Atlas, configure a Private Endpoint: https://www.mongodb.com/docs/atlas/security-configure-private-endpoints/
+
+If you are utilizing MongoDB Atlas, ensure to enhance your security measures by configuring a Private Endpoint. Refer to the MongoDB Atlas documentation on configuring Private Endpoints for detailed instructions: [MongoDB Atlas - Configure Private Endpoints](https://www.mongodb.com/docs/atlas/security-configure-private-endpoints/)
 
 To install dotnet on AWS EC2 (Amazon Linux):
 
