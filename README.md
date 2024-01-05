@@ -4,7 +4,7 @@ An uncomplicated .NET 7 console application designed to evaluate MongoDB retriev
 
 1. **Classic BSON:** Examining fetch performance using the traditional BSON format.
    
-2. **Protobuf (encapsulated in an indexable envelope):** Assessing the efficiency of data retrieval when utilizing Protobuf serialization, encapsulated within an indexable envelope for enhanced organization.
+2. **Protobuf (encapsulated in an indexable envelope):** Assessing the efficiency of data retrieval when utilizing Protobuf serialization, encapsulated within an indexable envelope for enhanced indexation.
 
 3. **GZipped Protobuf:** Investigating the impact of employing Protobuf serialization with an additional layer of compression through GZip. This aims to analyze the combined performance benefits of Protobuf's compactness and GZip's compression.
 
